@@ -1,0 +1,81 @@
+x-disable-probes: &DISABLE_PROBES
+  metrics:
+    enabled: false
+  readinessProbe: false
+  livenessProbe: false
+
+frontend:
+  image:
+    repository: pm4ml/mojaloop-payment-manager-ui
+    tag: 1.17.7
+
+management-api:
+  env:
+    REFRESH_INTERVAL_SECONDS: 300
+    ENABLE_UI_API_SERVER: true
+
+experience-api:
+  image:
+    repository: infitx/mojaloop-payment-manager-experience-api
+  env:
+    authSessionSecure: false
+
+scheme-adapter:
+  sdk-scheme-adapter-api-svc:
+    <<: *DISABLE_PROBES
+    env:
+      LOG_LEVEL: verbose
+      REQUEST_PROCESSING_TIMEOUT_SECONDS: 30
+      API_TYPE: iso20022
+      ILP_VERSION: "4"
+      AUTO_ACCEPT_PARTICIPANTS_PUT: true
+      OAUTH_REFRESH_SECONDS: 250 # 300-50
+      OIDC_AUTH_FAILURE_REQUEST_RETRIES: 3
+
+ttk:
+  ml-testing-toolkit-backend:
+    config_files:
+      rules_response__default.json: https://raw.githubusercontent.com/infitx-org/comesa-tests/refs/tags/v1.5.0/ttk-rules/sync-response-rules.json
+      system_config.json: {
+        "TRACE_URL": "https://grafana.int.${cluster.env}.${cluster.domain}/d/ml-trace/trace?var-traceid=%s&from=%s&to=%s",
+        "INIT_CONFIG": {
+          "objectStore": {
+            "partyInfo" : {
+              "provisionedParties": [
+                {
+                    "displayName": "Chikondi Banda",
+                    "firstName": "Chikondi",
+                    "lastName": "Banda",
+                    "middleName": "G",
+                    "dateOfBirth": "1970-01-01",
+                    "idType": "MSISDN",
+                    "idValue": "16665551002"
+                }
+              ]
+            }
+          }
+        }
+      }
+  ml-testing-toolkit-frontend:
+    image:
+      repository: mojaloop/ml-testing-toolkit-ui
+
+prometheus:
+  serverFiles:
+    prometheus.yml:
+      scrape_configs:
+      - job_name: prometheus
+        static_configs:
+        - targets:
+          - localhost:9090
+
+redis:
+  architecture: standalone
+  master:
+    persistence:
+      enabled: false
+      size: 1Gi
+  replica:
+    persistence:
+      enabled: false
+      size: 1Gi

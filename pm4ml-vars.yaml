@@ -1,0 +1,40 @@
+pm4mls_default:
+  core_connector_config:
+    enabled: false
+pm4mls:
+  test-${switch}-dfsp1: &test-dfsp
+    domain: ${switch}${domainSuffix}
+    currency: ${currency}
+  test-${switch}-dfsp2: *test-dfsp
+  perf-${switch}-dfsp1: &perf-dfsp
+    pm4ml_enabled: false
+    domain: ${switch}${domainSuffix}
+    currency: ${currency}
+    pm4ml_ttk_enabled: false
+    core_connector_selected: custom
+    custom_core_connector_endpoint: 'perf-${switch}-dfsp1-mojaloop-core-connector:3001/backend'
+    additional_ml_connector_config:
+      TRACE_FLAGS: "00"
+    core_connector_config:
+      enabled: true
+      image:
+        repository: mojaloop/callback-handler-simulator-svc
+        tag: v0.1.6
+      env:
+        API_TYPE: fspiop
+      ports:
+        - port: http
+          portNumber: 3001
+          containerPort: 3001
+          targetPort: http
+          protocol: TCP
+          serviceEnabled: true
+      livenessProbe:
+        enabled: true
+        path: /health
+        port: http
+      readinessProbe:
+        enabled: true
+        path: /health
+        port: http
+  perf-${switch}-dfsp2: *perf-dfsp

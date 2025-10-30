@@ -1,4 +1,5 @@
 pm4mls_default:
+  pm4ml_enabled: false
   core_connector_config:
     enabled: false
 pm4mls:
@@ -7,7 +8,6 @@ pm4mls:
     currency: ${currency}
   test-${switch}-dfsp2: *test-dfsp
   perf-${switch}-dfsp1: &perf-dfsp
-    pm4ml_enabled: false
     domain: ${switch}${domainSuffix}
     currency: ${currency}
     pm4ml_ttk_enabled: false

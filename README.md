@@ -13,7 +13,7 @@ them to a single currency Mojaloop switch.
         ref: main # replace this with a tag for production use
     ```
 
-2. Configure `custom-config/cluster.yaml`:
+2. Configure `custom-config/cluster-config.yaml`:
 
     ```yaml
     currency: GHS # the currency code for the switch deployment

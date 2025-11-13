@@ -37,4 +37,6 @@ pm4mls:
         enabled: true
         path: /health
         port: http
-  perf-${switch}-dfsp2: *perf-dfsp
+  perf-${switch}-dfsp2:
+    <<: *perf-dfsp
+    custom_core_connector_endpoint: 'perf-${switch}-dfsp2-mojaloop-core-connector:3001/backend'

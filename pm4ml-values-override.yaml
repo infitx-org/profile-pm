@@ -31,6 +31,7 @@ scheme-adapter:
       AUTO_ACCEPT_PARTICIPANTS_PUT: true
       OAUTH_REFRESH_SECONDS: 250 # 300-50
       OIDC_AUTH_FAILURE_REQUEST_RETRIES: 3
+      MANAGEMENT_API_POLL_INTERVAL_MS: 60000
 
 ttk:
   ml-testing-toolkit-backend:

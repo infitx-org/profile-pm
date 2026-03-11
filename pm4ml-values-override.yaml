@@ -80,3 +80,6 @@ redis:
     persistence:
       enabled: false
       size: 1Gi
+  commonConfiguration: |-
+    appendonly no
+    save ""

@@ -2,12 +2,34 @@ pm4mls_default:
   pm4ml_enabled: false
   core_connector_config:
     enabled: false
+  frontend:
+    enabled: true
+  experience-api:
+    enabled: true
+  ttk:
+    enabled: true
+  prometheus:
+    enabled: false
+  sim-backend:
+    enabled: true
+  mojaloop-core-connector:
+    enabled: true
 pm4mls:
   test-${switch}-dfsp1: &test-dfsp
     domain: ${switch}${domainSuffix}
     currency: ${currency}
   test-${switch}-dfsp2: *test-dfsp
   perf-${switch}-dfsp1: &perf-dfsp
+    frontend:
+      enabled: false
+    experience-api:
+      enabled: false
+    ttk:
+      enabled: false
+    prometheus:
+      enabled: false
+    sim-backend:
+      enabled: false
     domain: ${switch}${domainSuffix}
     currency: ${currency}
     pm4ml_ttk_enabled: false

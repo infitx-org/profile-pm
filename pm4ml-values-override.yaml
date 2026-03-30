@@ -13,6 +13,7 @@ management-api:
   env:
     REFRESH_INTERVAL_SECONDS: 300
     ENABLE_UI_API_SERVER: true
+    DISABLE_UI_API_CACHE: true
 
 experience-api:
   image:
@@ -32,6 +33,7 @@ scheme-adapter:
       OAUTH_REFRESH_SECONDS: 250 # 300-50
       OIDC_AUTH_FAILURE_REQUEST_RETRIES: 3
       MANAGEMENT_API_POLL_INTERVAL_MS: 60000
+      REDIS_CACHE_TTL: 600
 
 ttk:
   ml-testing-toolkit-backend:
@@ -76,10 +78,16 @@ redis:
     persistence:
       enabled: false
       size: 1Gi
+    extraFlags:
+    - "--maxmemory-policy allkeys-lru"
+    - "--maxmemory 2048mb"
   replica:
     persistence:
       enabled: false
       size: 1Gi
+    extraFlags:
+    - "--maxmemory-policy allkeys-lru"
+    - "--maxmemory 2048mb"
   commonConfiguration: |-
     appendonly no
     save ""

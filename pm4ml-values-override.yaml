@@ -5,6 +5,7 @@ x-disable-probes: &DISABLE_PROBES
   livenessProbe: false
 
 frontend:
+  enabled: ${frontend.enabled}
   image:
     repository: pm4ml/mojaloop-payment-manager-ui
     tag: 1.17.7
@@ -16,6 +17,7 @@ management-api:
     DISABLE_UI_API_CACHE: true
 
 experience-api:
+  enabled: ${experience-api.enabled}
   image:
     repository: infitx/mojaloop-payment-manager-experience-api
   env:
@@ -36,6 +38,7 @@ scheme-adapter:
       REDIS_CACHE_TTL: 600
 
 ttk:
+  enabled: ${ttk.enabled}
   ml-testing-toolkit-backend:
     config_files:
       rules_response__default.json: https://raw.githubusercontent.com/infitx-org/comesa-tests/refs/tags/v1.5.0/ttk-rules/sync-response-rules.json
@@ -64,6 +67,7 @@ ttk:
       repository: mojaloop/ml-testing-toolkit-ui
 
 prometheus:
+  enabled: ${prometheus.enabled}
   serverFiles:
     prometheus.yml:
       scrape_configs:
@@ -91,3 +95,6 @@ redis:
   commonConfiguration: |-
     appendonly no
     save ""
+
+sim-backend:
+  enabled: ${sim-backend.enabled}
